@@ -1,7 +1,7 @@
-# cx.core.translit - Implementation Plan
+# TranslitKit - Implementation Plan
 
 **Project**: C# port of [translit-ua](https://github.com/dchaplinsky/translit-ua)
-**Package Name**: cx.core.translit
+**Package Name**: TranslitKit
 **Target Framework**: .NET 8.0+
 **Testing Framework**: xUnit
 **License**: MIT
@@ -22,9 +22,9 @@ Port the Python translit-ua library to C#, providing transliteration (romanizati
 **Objective**: Create solution structure, configure projects, and set up build pipeline.
 
 #### Tasks:
-- [x] 1.1 - Create solution file `cx.core.translit.sln`
-- [x] 1.2 - Create class library project `cx.core.translit` (.NET 8.0)
-- [x] 1.3 - Create test project `cx.core.translit.Tests` (xUnit)
+- [x] 1.1 - Create solution file `TranslitKit.sln`
+- [x] 1.2 - Create class library project `TranslitKit` (.NET 8.0)
+- [x] 1.3 - Create test project `TranslitKit.Tests` (xUnit)
 - [x] 1.4 - Configure project references
 - [x] 1.5 - Add .gitignore for .NET projects
 - [x] 1.6 - Create LICENSE file (MIT)

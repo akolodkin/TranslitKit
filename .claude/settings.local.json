@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dotnet test:*)"
+      "Bash(dotnet test:*)",
+      "Bash(mv:*)",
+      "Bash(git mv:*)"
     ],
     "deny": [],
     "ask": []

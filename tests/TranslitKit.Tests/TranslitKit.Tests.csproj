@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\cx.core.translit\cx.core.translit.csproj" />
+    <ProjectReference Include="..\..\src\TranslitKit\TranslitKit.csproj" />
   </ItemGroup>
 
 </Project>
