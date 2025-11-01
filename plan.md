@@ -1,0 +1,367 @@
+# cx.core.translit - Implementation Plan
+
+**Project**: C# port of [translit-ua](https://github.com/dchaplinsky/translit-ua)
+**Package Name**: cx.core.translit
+**Target Framework**: .NET 8.0+
+**Testing Framework**: xUnit
+**License**: MIT
+**Development Approach**: Test-Driven Development (TDD)
+
+---
+
+## Project Overview
+
+Port the Python translit-ua library to C#, providing transliteration (romanization) for Ukrainian (13 systems) and Russian (10 systems) text from Cyrillic to Latin characters.
+
+---
+
+## Implementation Phases
+
+### **Phase 1: Project Setup and Infrastructure** ✅ COMPLETE
+
+**Objective**: Create solution structure, configure projects, and set up build pipeline.
+
+#### Tasks:
+- [x] 1.1 - Create solution file `cx.core.translit.sln`
+- [x] 1.2 - Create class library project `cx.core.translit` (.NET 8.0)
+- [x] 1.3 - Create test project `cx.core.translit.Tests` (xUnit)
+- [x] 1.4 - Configure project references
+- [x] 1.5 - Add .gitignore for .NET projects
+- [x] 1.6 - Create LICENSE file (MIT)
+- [x] 1.7 - Create README.md with basic usage
+- [x] 1.8 - Configure NuGet package properties in .csproj
+- [x] 1.9 - Verify build succeeds (`dotnet build --no-restore`)
+
+**Exit Criteria**: Solution builds successfully, tests run (even if empty). ✅
+
+---
+
+### **Phase 2: Core Interfaces and Base Classes** ⏳ PENDING
+
+**Objective**: Define contracts and base implementation following TDD.
+
+#### Tasks:
+- [ ] 2.1 - **TEST**: Write tests for `ITransliterationTable` contract expectations
+- [ ] 2.2 - **CODE**: Implement `ITransliterationTable` interface
+  - Properties: MainTranslitTable, SpecialCases, FirstCharacters, DeletePattern
+- [ ] 2.3 - **TEST**: Write tests for `TransliterationTableBase` initialization
+- [ ] 2.4 - **CODE**: Implement `TransliterationTableBase` abstract class
+  - Constructor with table building logic
+  - Pattern compilation (DELETE_PATTERN, SPECIAL_CASES, FIRST_CHARACTERS)
+- [ ] 2.5 - **REFACTOR**: Ensure clean abstractions
+- [ ] 2.6 - **TEST**: Write helper method tests (AddUppercase, ConvertTable)
+- [ ] 2.7 - **CODE**: Implement table helper methods
+- [ ] 2.8 - All Phase 2 tests passing ✅
+
+**Exit Criteria**: Base infrastructure tested and working, ready for concrete implementations.
+
+---
+
+### **Phase 3: Main Transliteration Engine** ⏳ PENDING
+
+**Objective**: Implement core `Translit` class with 5-stage conversion algorithm using TDD.
+
+#### Tasks:
+- [ ] 3.1 - **TEST**: Write test for basic transliteration (mock table)
+- [ ] 3.2 - **CODE**: Implement `Translit.Convert()` method skeleton
+- [ ] 3.3 - **TEST**: Write tests for Stage 1 (character deletion)
+- [ ] 3.4 - **CODE**: Implement Stage 1 (DELETE_PATTERN processing)
+- [ ] 3.5 - **TEST**: Write tests for Stage 2 (special cases)
+- [ ] 3.6 - **CODE**: Implement Stage 2 (SPECIAL_CASES pattern replacement)
+- [ ] 3.7 - **TEST**: Write tests for Stage 3 (first characters)
+- [ ] 3.8 - **CODE**: Implement Stage 3 (FIRST_CHARACTERS word-boundary handling)
+- [ ] 3.9 - **TEST**: Write tests for Stage 4 (main transliteration)
+- [ ] 3.10 - **CODE**: Implement Stage 4 (character-by-character conversion)
+- [ ] 3.11 - **TEST**: Write tests for Stage 5 (case preservation)
+- [ ] 3.12 - **CODE**: Implement Stage 5 (preserve uppercase)
+- [ ] 3.13 - **TEST**: Write edge case tests (null, empty, all-caps, mixed)
+- [ ] 3.14 - **REFACTOR**: Optimize and clean up conversion logic
+- [ ] 3.15 - All Phase 3 tests passing ✅
+
+**Exit Criteria**: Core engine fully tested and working with mock tables.
+
+---
+
+### **Phase 4: Ukrainian Transliteration Tables** ⏳ PENDING
+
+**Objective**: Implement all 13 Ukrainian transliteration systems using TDD.
+
+#### 4.1 - UkrainianKMU (Default - National 2010)
+- [ ] 4.1.1 - **TEST**: Write tests for UkrainianKMU mappings
+- [ ] 4.1.2 - **CODE**: Implement UkrainianKMU class with all tables
+  - _MAIN_TRANSLIT_TABLE (33 mappings)
+  - _SPECIAL_CASES (зг→zgh, ЗГ→ZGh)
+  - _FIRST_CHARACTERS (є→ye, ї→yi, й→y, ю→yu, я→ya)
+  - _DELETE_CASES (ь, apostrophes)
+- [ ] 4.1.3 - **TEST**: Test against Python library examples
+- [ ] 4.1.4 - Tests passing ✅
+
+#### 4.2 - UkrainianSimple
+- [ ] 4.2.1 - **TEST**: Write tests for UkrainianSimple
+- [ ] 4.2.2 - **CODE**: Implement UkrainianSimple
+- [ ] 4.2.3 - Tests passing ✅
+
+#### 4.3 - UkrainianWWS
+- [ ] 4.3.1 - **TEST**: Write tests for UkrainianWWS
+- [ ] 4.3.2 - **CODE**: Implement UkrainianWWS
+- [ ] 4.3.3 - Tests passing ✅
+
+#### 4.4 - UkrainianBritish
+- [ ] 4.4.1 - **TEST**: Write tests
+- [ ] 4.4.2 - **CODE**: Implement
+- [ ] 4.4.3 - Tests passing ✅
+
+#### 4.5 - UkrainianBGN
+- [ ] 4.5.1 - **TEST**: Write tests
+- [ ] 4.5.2 - **CODE**: Implement
+- [ ] 4.5.3 - Tests passing ✅
+
+#### 4.6 - UkrainianISO9
+- [ ] 4.6.1 - **TEST**: Write tests
+- [ ] 4.6.2 - **CODE**: Implement
+- [ ] 4.6.3 - Tests passing ✅
+
+#### 4.7 - UkrainianFrench
+- [ ] 4.7.1 - **TEST**: Write tests
+- [ ] 4.7.2 - **CODE**: Implement
+- [ ] 4.7.3 - Tests passing ✅
+
+#### 4.8 - UkrainianGerman
+- [ ] 4.8.1 - **TEST**: Write tests
+- [ ] 4.8.2 - **CODE**: Implement
+- [ ] 4.8.3 - Tests passing ✅
+
+#### 4.9 - UkrainianGOST1971
+- [ ] 4.9.1 - **TEST**: Write tests
+- [ ] 4.9.2 - **CODE**: Implement
+- [ ] 4.9.3 - Tests passing ✅
+
+#### 4.10 - UkrainianGOST1986
+- [ ] 4.10.1 - **TEST**: Write tests
+- [ ] 4.10.2 - **CODE**: Implement
+- [ ] 4.10.3 - Tests passing ✅
+
+#### 4.11 - UkrainianPassport2007
+- [ ] 4.11.1 - **TEST**: Write tests
+- [ ] 4.11.2 - **CODE**: Implement
+- [ ] 4.11.3 - Tests passing ✅
+
+#### 4.12 - UkrainianNational1996
+- [ ] 4.12.1 - **TEST**: Write tests
+- [ ] 4.12.2 - **CODE**: Implement
+- [ ] 4.12.3 - Tests passing ✅
+
+#### 4.13 - UkrainianPassport2004Alt
+- [ ] 4.13.1 - **TEST**: Write tests
+- [ ] 4.13.2 - **CODE**: Implement
+- [ ] 4.13.3 - Tests passing ✅
+
+**Exit Criteria**: All 13 Ukrainian tables implemented, tested, and passing.
+
+---
+
+### **Phase 5: Russian Transliteration Tables** ⏳ PENDING
+
+**Objective**: Implement all 10 Russian transliteration systems using TDD.
+
+#### 5.1 - RussianGOST2006 (Default - GOST 2006)
+- [ ] 5.1.1 - **TEST**: Write tests for RussianGOST2006
+- [ ] 5.1.2 - **CODE**: Implement RussianGOST2006 class
+- [ ] 5.1.3 - **TEST**: Test against Python examples
+- [ ] 5.1.4 - Tests passing ✅
+
+#### 5.2 - RussianSimple
+- [ ] 5.2.1 - **TEST**: Write tests
+- [ ] 5.2.2 - **CODE**: Implement
+- [ ] 5.2.3 - Tests passing ✅
+
+#### 5.3 - RussianICAO
+- [ ] 5.3.1 - **TEST**: Write tests
+- [ ] 5.3.2 - **CODE**: Implement
+- [ ] 5.3.3 - Tests passing ✅
+
+#### 5.4 - RussianTelegram
+- [ ] 5.4.1 - **TEST**: Write tests
+- [ ] 5.4.2 - **CODE**: Implement
+- [ ] 5.4.3 - Tests passing ✅
+
+#### 5.5 - RussianInternationalPassport1997
+- [ ] 5.5.1 - **TEST**: Write tests
+- [ ] 5.5.2 - **CODE**: Implement
+- [ ] 5.5.3 - Tests passing ✅
+
+#### 5.6 - RussianInternationalPassport1997Reduced
+- [ ] 5.6.1 - **TEST**: Write tests
+- [ ] 5.6.2 - **CODE**: Implement
+- [ ] 5.6.3 - Tests passing ✅
+
+#### 5.7 - RussianDriverLicense
+- [ ] 5.7.1 - **TEST**: Write tests
+- [ ] 5.7.2 - **CODE**: Implement
+- [ ] 5.7.3 - Tests passing ✅
+
+#### 5.8 - RussianISO9SystemA
+- [ ] 5.8.1 - **TEST**: Write tests
+- [ ] 5.8.2 - **CODE**: Implement
+- [ ] 5.8.3 - Tests passing ✅
+
+#### 5.9 - RussianISO9SystemB
+- [ ] 5.9.1 - **TEST**: Write tests
+- [ ] 5.9.2 - **CODE**: Implement
+- [ ] 5.9.3 - Tests passing ✅
+
+#### 5.10 - RussianISOR9Table2
+- [ ] 5.10.1 - **TEST**: Write tests
+- [ ] 5.10.2 - **CODE**: Implement
+- [ ] 5.10.3 - Tests passing ✅
+
+**Exit Criteria**: All 10 Russian tables implemented, tested, and passing.
+
+---
+
+### **Phase 6: NuGet Packaging and Documentation** ⏳ PENDING
+
+**Objective**: Prepare for distribution with complete documentation.
+
+#### Tasks:
+- [ ] 6.1 - Add XML documentation comments to all public APIs
+- [ ] 6.2 - Create `TransliterationTables` static class
+  - AllUkrainian collection
+  - AllRussian collection
+  - AllTransliterations collection
+- [ ] 6.3 - Update README.md with:
+  - Installation instructions
+  - Quick start guide
+  - API reference
+  - All available tables
+  - Examples for each major system
+- [ ] 6.4 - Create CHANGELOG.md
+- [ ] 6.5 - Configure .csproj for NuGet:
+  - PackageId, Version, Authors, Description
+  - PackageLicenseExpression: MIT
+  - RepositoryUrl, PackageTags
+  - GenerateDocumentationFile: true
+- [ ] 6.6 - Test local NuGet pack (`dotnet pack`)
+- [ ] 6.7 - Verify package contents
+
+**Exit Criteria**: Package ready for publishing, documentation complete.
+
+---
+
+### **Phase 7: Final Testing and Validation** ⏳ PENDING
+
+**Objective**: Comprehensive validation before release.
+
+#### Tasks:
+- [ ] 7.1 - Run full test suite (all 23+ tables)
+- [ ] 7.2 - Benchmark performance tests
+- [ ] 7.3 - Cross-reference with Python library outputs
+- [ ] 7.4 - Test edge cases:
+  - Unicode edge cases
+  - Very long strings (10k+ chars)
+  - Special characters
+  - Mixed Cyrillic/Latin text
+- [ ] 7.5 - Code coverage analysis (aim for 90%+)
+- [ ] 7.6 - Create sample console application demo
+- [ ] 7.7 - Final build and test
+- [ ] 7.8 - All tests passing ✅
+
+**Exit Criteria**: Library fully validated, all tests passing, ready for v1.0.0 release.
+
+---
+
+## Progress Tracking
+
+| Phase | Status | Progress | Tests Passing |
+|-------|--------|----------|---------------|
+| Phase 1: Project Setup | ✅ COMPLETE | 9/9 | N/A |
+| Phase 2: Core Interfaces | ⏳ PENDING | 0/8 | ❌ |
+| Phase 3: Transliteration Engine | ⏳ PENDING | 0/15 | ❌ |
+| Phase 4: Ukrainian Tables | ⏳ PENDING | 0/39 | ❌ |
+| Phase 5: Russian Tables | ⏳ PENDING | 0/30 | ❌ |
+| Phase 6: NuGet & Docs | ⏳ PENDING | 0/7 | N/A |
+| Phase 7: Final Validation | ⏳ PENDING | 0/8 | ❌ |
+| **TOTAL** | **🚧 IN PROGRESS** | **9/116** | **❌** |
+
+---
+
+## Key Technical Details
+
+### Transliteration Algorithm (5 Stages)
+
+```
+Input: src (string), table (ITransliterationTable), preserveCase (bool)
+
+Stage 1: DELETE_PATTERN
+  └─ Remove soft signs (ь, Ь) and apostrophes (', ', ʼ)
+
+Stage 2: SPECIAL_CASES
+  └─ Replace multi-char sequences (e.g., "зг" → "zgh")
+  └─ Uses regex pattern matching
+
+Stage 3: FIRST_CHARACTERS
+  └─ Word-initial variants (e.g., "є" → "ye" at start, "ie" otherwise)
+  └─ Uses \b word boundary regex
+
+Stage 4: MAIN_TRANSLIT_TABLE
+  └─ Character-by-character transliteration
+  └─ Supports multi-char outputs (e.g., 'ж' → "zh")
+
+Stage 5: CASE_PRESERVATION
+  └─ If original was all uppercase AND preserveCase=true
+  └─ Convert result to uppercase
+
+Output: transliterated string
+```
+
+### API Surface
+
+```csharp
+// Main API
+public static class Translit
+{
+    public static string Convert(string source);
+    public static string Convert(string source, ITransliterationTable table);
+    public static string Convert(string source, ITransliterationTable table, bool preserveCase);
+}
+
+// Interface
+public interface ITransliterationTable
+{
+    Dictionary<char, string> MainTranslitTable { get; }
+    Dictionary<string, string>? SpecialCases { get; }
+    Dictionary<string, string>? FirstCharacters { get; }
+    Regex? DeletePattern { get; }
+}
+
+// Collections
+public static class TransliterationTables
+{
+    public static IReadOnlyList<ITransliterationTable> AllUkrainian { get; }
+    public static IReadOnlyList<ITransliterationTable> AllRussian { get; }
+    public static IReadOnlyList<ITransliterationTable> AllTransliterations { get; }
+}
+```
+
+---
+
+## Notes
+
+- **TDD Cycle**: Red (write failing test) → Green (make it pass) → Refactor
+- **Test Naming**: `MethodName_Scenario_ExpectedResult`
+- **Commit Strategy**: Commit after each completed task with meaningful messages
+- **Python Reference**: Use original library examples for validation
+- **Performance**: Optimize after correctness is proven by tests
+
+---
+
+## Version History
+
+- **v1.0.0** - Initial release (target)
+  - 13 Ukrainian transliteration systems
+  - 10 Russian transliteration systems
+  - Full parity with Python translit-ua library
+
+---
+
+Last Updated: 2025-11-01

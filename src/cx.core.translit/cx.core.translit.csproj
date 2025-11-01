@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- NuGet Package Properties -->
+    <PackageId>cx.core.translit</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>cx.core</Authors>
+    <Company>cx.core</Company>
+    <Product>cx.core.translit</Product>
+    <Description>Ukrainian and Russian transliteration library for .NET. Converts Cyrillic text to Latin characters using 23 standardized romanization systems (13 Ukrainian, 10 Russian). Port of the Python translit-ua library.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/yourusername/cx.core.translit</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yourusername/cx.core.translit</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>transliteration;ukrainian;russian;cyrillic;latin;romanization;translit;localization;i18n</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>Initial release with 13 Ukrainian and 10 Russian transliteration systems.</PackageReleaseNotes>
+
+    <!-- Documentation -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+</Project>
