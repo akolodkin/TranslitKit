@@ -58,28 +58,28 @@ Port the Python translit-ua library to C#, providing transliteration (romanizati
 
 ---
 
-### **Phase 3: Main Transliteration Engine** ⏳ PENDING
+### **Phase 3: Main Transliteration Engine** ✅ COMPLETE
 
 **Objective**: Implement core `Translit` class with 5-stage conversion algorithm using TDD.
 
 #### Tasks:
-- [ ] 3.1 - **TEST**: Write test for basic transliteration (mock table)
-- [ ] 3.2 - **CODE**: Implement `Translit.Convert()` method skeleton
-- [ ] 3.3 - **TEST**: Write tests for Stage 1 (character deletion)
-- [ ] 3.4 - **CODE**: Implement Stage 1 (DELETE_PATTERN processing)
-- [ ] 3.5 - **TEST**: Write tests for Stage 2 (special cases)
-- [ ] 3.6 - **CODE**: Implement Stage 2 (SPECIAL_CASES pattern replacement)
-- [ ] 3.7 - **TEST**: Write tests for Stage 3 (first characters)
-- [ ] 3.8 - **CODE**: Implement Stage 3 (FIRST_CHARACTERS word-boundary handling)
-- [ ] 3.9 - **TEST**: Write tests for Stage 4 (main transliteration)
-- [ ] 3.10 - **CODE**: Implement Stage 4 (character-by-character conversion)
-- [ ] 3.11 - **TEST**: Write tests for Stage 5 (case preservation)
-- [ ] 3.12 - **CODE**: Implement Stage 5 (preserve uppercase)
-- [ ] 3.13 - **TEST**: Write edge case tests (null, empty, all-caps, mixed)
-- [ ] 3.14 - **REFACTOR**: Optimize and clean up conversion logic
-- [ ] 3.15 - All Phase 3 tests passing ✅
+- [x] 3.1 - **TEST**: Write test for basic transliteration (mock table)
+- [x] 3.2 - **CODE**: Implement `Translit.Convert()` method skeleton
+- [x] 3.3 - **TEST**: Write tests for Stage 1 (character deletion)
+- [x] 3.4 - **CODE**: Implement Stage 1 (DELETE_PATTERN processing)
+- [x] 3.5 - **TEST**: Write tests for Stage 2 (special cases)
+- [x] 3.6 - **CODE**: Implement Stage 2 (SPECIAL_CASES pattern replacement)
+- [x] 3.7 - **TEST**: Write tests for Stage 3 (first characters)
+- [x] 3.8 - **CODE**: Implement Stage 3 (FIRST_CHARACTERS word-boundary handling)
+- [x] 3.9 - **TEST**: Write tests for Stage 4 (main transliteration)
+- [x] 3.10 - **CODE**: Implement Stage 4 (character-by-character conversion)
+- [x] 3.11 - **TEST**: Write tests for Stage 5 (case preservation)
+- [x] 3.12 - **CODE**: Implement Stage 5 (preserve uppercase)
+- [x] 3.13 - **TEST**: Write edge case tests (null, empty, all-caps, mixed)
+- [x] 3.14 - **REFACTOR**: Optimize and clean up conversion logic ✅
+- [x] 3.15 - All Phase 3 tests passing ✅ (45/45 tests)
 
-**Exit Criteria**: Core engine fully tested and working with mock tables.
+**Exit Criteria**: Core engine fully tested and working with mock tables. ✅
 
 ---
 
@@ -87,15 +87,15 @@ Port the Python translit-ua library to C#, providing transliteration (romanizati
 
 **Objective**: Implement all 13 Ukrainian transliteration systems using TDD.
 
-#### 4.1 - UkrainianKMU (Default - National 2010)
-- [ ] 4.1.1 - **TEST**: Write tests for UkrainianKMU mappings
-- [ ] 4.1.2 - **CODE**: Implement UkrainianKMU class with all tables
+#### 4.1 - UkrainianKMU (Default - National 2010) ✅ COMPLETE
+- [x] 4.1.1 - **TEST**: Write tests for UkrainianKMU mappings
+- [x] 4.1.2 - **CODE**: Implement UkrainianKMU class with all tables
   - _MAIN_TRANSLIT_TABLE (33 mappings)
   - _SPECIAL_CASES (зг→zgh, ЗГ→ZGh)
   - _FIRST_CHARACTERS (є→ye, ї→yi, й→y, ю→yu, я→ya)
   - _DELETE_CASES (ь, apostrophes)
-- [ ] 4.1.3 - **TEST**: Test against Python library examples
-- [ ] 4.1.4 - Tests passing ✅
+- [x] 4.1.3 - **TEST**: Test against Python library examples
+- [x] 4.1.4 - Tests passing ✅ (91/91 tests)
 
 #### 4.2 - UkrainianSimple
 - [ ] 4.2.1 - **TEST**: Write tests for UkrainianSimple
@@ -277,12 +277,12 @@ Port the Python translit-ua library to C#, providing transliteration (romanizati
 |-------|--------|----------|---------------|
 | Phase 1: Project Setup | ✅ COMPLETE | 9/9 | N/A |
 | Phase 2: Core Interfaces | ✅ COMPLETE | 8/8 | ✅ 19/19 |
-| Phase 3: Transliteration Engine | ⏳ PENDING | 0/15 | ❌ |
-| Phase 4: Ukrainian Tables | ⏳ PENDING | 0/39 | ❌ |
+| Phase 3: Transliteration Engine | ✅ COMPLETE | 15/15 | ✅ 45/45 |
+| Phase 4: Ukrainian Tables | 🚧 IN PROGRESS | 4/39 (UkrainianKMU done) | ✅ 91/91 |
 | Phase 5: Russian Tables | ⏳ PENDING | 0/30 | ❌ |
 | Phase 6: NuGet & Docs | ⏳ PENDING | 0/7 | N/A |
 | Phase 7: Final Validation | ⏳ PENDING | 0/8 | ❌ |
-| **TOTAL** | **🚧 IN PROGRESS** | **17/116** | **✅ 19/19** |
+| **TOTAL** | **🚧 IN PROGRESS** | **36/116 (31%)** | **✅ 136/136** |
 
 ---
 
