@@ -128,6 +128,98 @@ The library implements a 5-stage transliteration algorithm:
 4. **Main Transliteration** - Character-by-character conversion
 5. **Case Preservation** - Maintain uppercase if original was all caps
 
+## Reverse Transliteration (Latin → Cyrillic)
+
+**TranslitKit does not support reverse transliteration** (converting Latin text back to Cyrillic). This is an intentional design decision due to fundamental limitations inherent in reverse transliteration.
+
+### Why Reverse Transliteration Is Not Supported
+
+#### 1. Ambiguity - Multiple Characters Map to Same Output
+
+Many different Cyrillic characters transliterate to the same Latin representation:
+
+```csharp
+// Ukrainian examples:
+"и" → "y"
+"і" → "i"
+"ї" → "i"  // mid-word
+
+// Reverse: Which character did "i" come from?
+"i" → "і"? or "ї"? or "й"? (impossible to determine)
+```
+
+#### 2. Information Loss from Character Deletion
+
+Some characters are deleted during transliteration and cannot be recovered:
+
+```csharp
+// Forward transliteration:
+"м'ясо" → "miaso"  // apostrophe (') is deleted
+
+// Reverse is impossible:
+"miaso" → "мясо"? or "м'ясо"? or "мяcо"?
+```
+
+#### 3. Context-Dependent Rules Cannot Be Reversed
+
+Different contexts produce different outputs from the same character:
+
+```csharp
+// Ukrainian є has different transliterations:
+"Єва"        → "Yeva"         // є at word start → "ye"
+"моє"        → "moie"         // є mid-word → "ie"
+"поєднання"  → "poiednannia"  // є mid-word → "ie"
+
+// Reverse: What did "ye" come from?
+"Yeva" → "Єва"? or "Йева"? or "Ева"?
+```
+
+#### 4. Special Contextual Sequences
+
+Special case rules create one-way transformations:
+
+```csharp
+// Ukrainian KMU special case:
+"розгром" → "rozghrom"  // "зг" becomes "zgh"
+
+// Reverse is ambiguous:
+"rozghrom" → "розгром"? or "розгхром"?
+```
+
+### Recommended Approaches
+
+If you need bidirectional text conversion, consider these alternatives:
+
+1. **Store Both Versions** - Keep the original Cyrillic text alongside the transliteration:
+   ```csharp
+   var original = "Київ";
+   var transliterated = Translit.Convert(original, new UkrainianKMU());
+   // Store both: original = "Київ", transliterated = "Kyiv"
+   ```
+
+2. **Use Transliteration for Display Only** - Treat Latin output as a read-only representation for URLs, filenames, or display purposes while maintaining Cyrillic as the source of truth.
+
+3. **Implement Custom Reverse Logic** - If reverse transliteration is critical, you'll need:
+   - Custom dictionary-based lookup tables
+   - Statistical or machine learning approaches for disambiguation
+   - Language-specific heuristics
+   - Acceptance that results will be probabilistic and potentially incorrect
+
+4. **Specialized Bidirectional Libraries** - Look for libraries specifically designed for bidirectional conversion, though these face the same fundamental ambiguity challenges.
+
+### Use Cases Where One-Way Is Sufficient
+
+TranslitKit is designed for scenarios where Cyrillic → Latin conversion is sufficient:
+
+- **URL slugs**: `"Київ"` → `"kyiv"` for `example.com/city/kyiv`
+- **Filenames**: `"Звіт 2024.pdf"` → `"zvit-2024.pdf"`
+- **Search indexing**: Make Cyrillic content searchable via Latin queries
+- **International documents**: Passport names, official documents requiring Latin script
+- **Data export**: Converting Cyrillic data for systems that don't support Unicode
+- **Display purposes**: Showing Cyrillic names in Latin-only contexts
+
+In all these cases, the original Cyrillic text should remain the authoritative source.
+
 ## Requirements
 
 - .NET 8.0 or higher
