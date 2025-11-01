@@ -124,10 +124,10 @@ public class TranslitTests
 
     #endregion
 
-    #region Stage 1: Delete Pattern Tests
+    #region Character Deletion Tests
 
     [Fact]
-    public void Convert_Stage1_DeletesSoftSign()
+    public void Convert_WithSoftSign_RemovesIt()
     {
         // Arrange
         var table = new SimpleTestTable();
@@ -141,7 +141,7 @@ public class TranslitTests
     }
 
     [Fact]
-    public void Convert_Stage1_DeletesApostrophes()
+    public void Convert_WithApostrophe_RemovesIt()
     {
         // Arrange
         var table = new SimpleTestTable();
@@ -155,7 +155,7 @@ public class TranslitTests
     }
 
     [Fact]
-    public void Convert_Stage1_DeletesUnicodeApostrophes()
+    public void Convert_WithUnicodeApostrophe_RemovesIt()
     {
         // Arrange
         var table = new SimpleTestTable();
@@ -170,10 +170,10 @@ public class TranslitTests
 
     #endregion
 
-    #region Stage 2: Special Cases Tests
+    #region Contextual Sequence Tests
 
     [Fact]
-    public void Convert_Stage2_AppliesSpecialCases()
+    public void Convert_WithContextualSequence_AppliesMapping()
     {
         // Arrange
         var table = new SimpleTestTable();
@@ -187,23 +187,23 @@ public class TranslitTests
     }
 
     [Fact]
-    public void Convert_Stage2_SpecialCasesUppercase()
+    public void Convert_WithContextualSequenceAllCaps_AppliesMappingAndPreservesCase()
     {
         // Arrange
         var table = new SimpleTestTable();
-        string input = "РОЗГРОМ"; // "ЗГ" should become "ZGh", then Stage 5 uppercases all
+        string input = "РОЗГРОМ"; // "ЗГ" should become "ZGh", then uppercase all
 
         // Act
         string result = Translit.Convert(input, table);
 
         // Assert
-        // Stage 2 applies "ЗГ" → "ZGh" giving "ROZGhROM"
-        // Stage 5 uppercases everything because source was all caps: "ROZGHROM"
+        // Contextual mapping applies "ЗГ" → "ZGh" giving "ROZGhROM"
+        // Case preservation uppercases everything because source was all caps: "ROZGHROM"
         Assert.Equal("ROZGHROM", result);
     }
 
     [Fact]
-    public void Convert_Stage2_SpecialCasesMixedCase()
+    public void Convert_WithContextualSequenceMixedCase_AppliesMapping()
     {
         // Arrange
         var table = new SimpleTestTable();
@@ -218,10 +218,10 @@ public class TranslitTests
 
     #endregion
 
-    #region Stage 3: First Characters Tests
+    #region Word Boundary Rules Tests
 
     [Fact]
-    public void Convert_Stage3_FirstCharacterAtWordStart()
+    public void Convert_WithFirstCharacterAtWordStart_AppliesWordBoundaryRule()
     {
         // Arrange
         var table = new SimpleTestTable();
@@ -235,7 +235,7 @@ public class TranslitTests
     }
 
     [Fact]
-    public void Convert_Stage3_FirstCharacterMidWord()
+    public void Convert_WithFirstCharacterMidWord_AppliesMainTableMapping()
     {
         // Arrange
         var table = new SimpleTestTable();
@@ -249,11 +249,11 @@ public class TranslitTests
     }
 
     [Fact]
-    public void Convert_Stage3_MultipleWordsWithFirstCharacters()
+    public void Convert_WithMultipleWordBoundaries_AppliesWordBoundaryRule()
     {
         // Arrange
         var table = new SimpleTestTable();
-        string input = "Єва і Юрій"; // Both start with first-character rules
+        string input = "Єва і Юрій"; // Both start with word boundary rules
 
         // Act
         string result = Translit.Convert(input, table);
@@ -263,7 +263,7 @@ public class TranslitTests
     }
 
     [Fact]
-    public void Convert_Stage3_FirstCharacterAfterSpace()
+    public void Convert_WithCharacterAfterWordBoundary_DoesNotApplyWordBoundaryRule()
     {
         // Arrange
         var table = new SimpleTestTable();
@@ -280,10 +280,10 @@ public class TranslitTests
 
     #endregion
 
-    #region Stage 4: Main Transliteration Tests
+    #region Character Transliteration Tests
 
     [Fact]
-    public void Convert_Stage4_AllBasicCharacters()
+    public void Convert_WithAllBasicCharacters_TransliteratesCorrectly()
     {
         // Arrange
         var table = new SimpleTestTable();
@@ -308,7 +308,7 @@ public class TranslitTests
     }
 
     [Fact]
-    public void Convert_Stage4_MaintainsNonCyrillicCharacters()
+    public void Convert_WithNonCyrillicCharacters_PreservesThemUnchanged()
     {
         // Arrange
         var table = new SimpleTestTable();
@@ -323,10 +323,10 @@ public class TranslitTests
 
     #endregion
 
-    #region Stage 5: Case Preservation Tests
+    #region Case Preservation Tests
 
     [Fact]
-    public void Convert_Stage5_AllUppercase_PreservesWhenFlagTrue()
+    public void Convert_AllUppercaseWithPreserveFlagTrue_ConvertsToUppercase()
     {
         // Arrange
         var table = new SimpleTestTable();
@@ -340,7 +340,7 @@ public class TranslitTests
     }
 
     [Fact]
-    public void Convert_Stage5_AllUppercase_DoesNotPreserveWhenFlagFalse()
+    public void Convert_AllUppercaseWithPreserveFlagFalse_AppliesTitleCase()
     {
         // Arrange
         var table = new SimpleTestTable();
@@ -354,7 +354,7 @@ public class TranslitTests
     }
 
     [Fact]
-    public void Convert_Stage5_MixedCase_DoesNotApplyUppercase()
+    public void Convert_MixedCase_DoesNotApplyAllUppercase()
     {
         // Arrange
         var table = new SimpleTestTable();
