@@ -1,4 +1,4 @@
-namespace cx.core.translit;
+namespace TranslitKit;
 
 /// <summary>
 /// Provides access to all available transliteration tables organized by language.

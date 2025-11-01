@@ -1,4 +1,4 @@
-namespace cx.core.translit;
+namespace TranslitKit;
 
 /// <summary>
 /// Ukrainian transliteration according to the 2004 Passport alternative standard.

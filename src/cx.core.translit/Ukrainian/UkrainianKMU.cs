@@ -1,4 +1,4 @@
-namespace cx.core.translit;
+namespace TranslitKit;
 
 /// <summary>
 /// Ukrainian transliteration table based on the KMU (Cabinet of Ministers of Ukraine)

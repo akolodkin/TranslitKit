@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace cx.core.translit;
+namespace TranslitKit;
 
 /// <summary>
 /// Base class for all transliteration table implementations.

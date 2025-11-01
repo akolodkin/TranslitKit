@@ -1,4 +1,4 @@
-namespace cx.core.translit;
+namespace TranslitKit;
 
 /// <summary>
 /// Simple Russian transliteration system.

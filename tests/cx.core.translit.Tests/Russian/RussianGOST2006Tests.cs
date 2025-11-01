@@ -1,4 +1,4 @@
-namespace cx.core.translit.Tests.Russian;
+namespace TranslitKit.Tests.Russian;
 
 /// <summary>
 /// Tests for the Russian GOST R 52535.1-2006 transliteration.

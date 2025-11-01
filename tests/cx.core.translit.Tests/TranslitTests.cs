@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using Xunit;
 
-namespace cx.core.translit.Tests;
+namespace TranslitKit.Tests;
 
 /// <summary>
 /// Tests for Translit static class - main transliteration engine.

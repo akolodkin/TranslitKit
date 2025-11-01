@@ -1,4 +1,4 @@
-namespace cx.core.translit;
+namespace TranslitKit;
 
 /// <summary>
 /// Ukrainian transliteration according to GOST 16876-71 (1971) standard.

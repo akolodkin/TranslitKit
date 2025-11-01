@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace cx.core.translit;
+namespace TranslitKit;
 
 /// <summary>
 /// Main transliteration class providing static methods to convert Cyrillic text to Latin characters.

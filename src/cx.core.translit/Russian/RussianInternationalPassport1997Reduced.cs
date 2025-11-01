@@ -1,4 +1,4 @@
-namespace cx.core.translit;
+namespace TranslitKit;
 
 /// <summary>
 /// Russian transliteration according to the 1997 International Passport standard (reduced variant).

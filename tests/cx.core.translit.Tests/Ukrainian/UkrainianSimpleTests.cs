@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace cx.core.translit.Tests.Ukrainian;
+namespace TranslitKit.Tests.Ukrainian;
 
 /// <summary>
 /// Tests for UkrainianSimple transliteration table.

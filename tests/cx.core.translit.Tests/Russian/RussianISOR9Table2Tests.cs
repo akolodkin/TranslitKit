@@ -1,4 +1,4 @@
-namespace cx.core.translit.Tests.Russian;
+namespace TranslitKit.Tests.Russian;
 
 /// <summary>
 /// Tests for the Russian ISO/R 9:1968 Table 2 transliteration.

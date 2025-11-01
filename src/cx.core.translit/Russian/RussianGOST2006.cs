@@ -1,4 +1,4 @@
-namespace cx.core.translit;
+namespace TranslitKit;
 
 /// <summary>
 /// Russian transliteration according to GOST R 52535.1-2006 standard.

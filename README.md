@@ -1,6 +1,6 @@
-# cx.core.translit
+# TranslitKit
 
-[![NuGet](https://img.shields.io/nuget/v/cx.core.translit.svg)](https://www.nuget.org/packages/cx.core.translit/)
+[![NuGet](https://img.shields.io/nuget/v/TranslitKit.svg)](https://www.nuget.org/packages/TranslitKit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A .NET library for transliterating Ukrainian and Russian text from Cyrillic to Latin characters. This is a C# port of the Python [translit-ua](https://github.com/dchaplinsky/translit-ua) library.
@@ -23,13 +23,13 @@ A .NET library for transliterating Ukrainian and Russian text from Cyrillic to L
 ## Installation
 
 ```bash
-dotnet add package cx.core.translit
+dotnet add package TranslitKit
 ```
 
 ## Quick Start
 
 ```csharp
-using cx.core.translit;
+using TranslitKit;
 
 // Ukrainian transliteration (uses UkrainianKMU by default)
 string result = Translit.Convert("Берег моря");
@@ -88,7 +88,7 @@ result = Translit.Convert("ПРИВІТ", new UkrainianKMU(), preserveCase: true
 ### Working with Collections
 
 ```csharp
-using cx.core.translit;
+using TranslitKit;
 
 // Access all Ukrainian systems
 var allUkrainian = TransliterationTables.AllUkrainian;
@@ -146,4 +146,4 @@ This library is a C# port of [translit-ua](https://github.com/dchaplinsky/transl
 
 ## Support
 
-For issues and questions, please use the [GitHub Issues](https://github.com/yourusername/cx.core.translit/issues) page.
+For issues and questions, please use the [GitHub Issues](https://github.com/yourusername/TranslitKit/issues) page.

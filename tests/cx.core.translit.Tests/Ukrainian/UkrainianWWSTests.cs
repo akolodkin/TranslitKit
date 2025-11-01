@@ -1,4 +1,4 @@
-namespace cx.core.translit.Tests.Ukrainian;
+namespace TranslitKit.Tests.Ukrainian;
 
 /// <summary>
 /// Tests for the Ukrainian WWS (Working Group on Romanization Systems) transliteration.

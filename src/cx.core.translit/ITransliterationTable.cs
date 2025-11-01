@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace cx.core.translit;
+namespace TranslitKit;
 
 /// <summary>
 /// Defines a contract for transliteration tables that convert Cyrillic text to Latin characters.

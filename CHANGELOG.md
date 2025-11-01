@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 #### Core Features
-- Initial release of cx.core.translit
+- Initial release of TranslitKit
 - Complete C# port of Python translit-ua library
 - Full .NET 8.0+ support with nullable reference types
 - Comprehensive XML documentation for all public APIs
@@ -85,4 +85,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Nullable reference types enabled
 - AOT-compatible design
 
-[1.0.0]: https://github.com/yourusername/cx.core.translit/releases/tag/v1.0.0
+[1.0.0]: https://github.com/yourusername/TranslitKit/releases/tag/v1.0.0

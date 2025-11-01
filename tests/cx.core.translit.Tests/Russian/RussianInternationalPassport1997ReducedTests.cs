@@ -1,4 +1,4 @@
-namespace cx.core.translit.Tests.Russian;
+namespace TranslitKit.Tests.Russian;
 
 /// <summary>
 /// Tests for the Russian International Passport 1997 Reduced transliteration.

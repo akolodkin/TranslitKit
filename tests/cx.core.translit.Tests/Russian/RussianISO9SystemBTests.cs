@@ -1,4 +1,4 @@
-namespace cx.core.translit.Tests.Russian;
+namespace TranslitKit.Tests.Russian;
 
 /// <summary>
 /// Tests for the Russian ISO 9 System B transliteration.
