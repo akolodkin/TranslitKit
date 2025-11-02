@@ -1,0 +1,44 @@
+version: 2
+updates:
+  # NuGet package dependencies
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "03:00"
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - nuget
+    commit-message:
+      prefix: "chore(deps):"
+      prefix-development: "chore(deps-dev):"
+      include: "scope"
+    allow:
+      - dependency-type: "all"
+    ignore:
+      # Ignore breaking changes to major versions - review manually
+      - dependency-name: "Microsoft.NET.Test.Sdk"
+        update-types:
+          - "version-update:semver-major"
+    pull-request-branch-name:
+      separator: "/"
+    rebase-strategy: auto
+    versioning-strategy: auto
+
+  # GitHub Actions workflow dependencies
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "03:30"
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - github-actions
+    commit-message:
+      prefix: "chore(ci):"
+      include: "scope"
+    rebase-strategy: auto
