@@ -763,4 +763,125 @@ public class TranslitTests
     }
 
     #endregion
+
+    #region Currency Map Tests
+
+    [Fact]
+    public void Compose_CurrencyMapWithLanguageMap_CreatesCompositeTable()
+    {
+        // Arrange
+        var currencyMap = new CurrencyMap();
+        var baseTable = new SimpleTestTable();
+        var compositeTable = CompositeTransliterationTable.Combine(currencyMap, baseTable);
+
+        // Act & Assert
+        Assert.NotNull(compositeTable);
+        Assert.NotNull(compositeTable.MainTranslitTable);
+        // Verify currency symbols are in composite
+        Assert.True(compositeTable.MainTranslitTable.ContainsKey('₴'));
+        Assert.True(compositeTable.MainTranslitTable.ContainsKey('₽'));
+        Assert.True(compositeTable.MainTranslitTable.ContainsKey('€'));
+    }
+
+    [Fact]
+    public void Convert_UkrainianHryvnia_ConvertsToUAH()
+    {
+        // Arrange
+        var compositeTable = CompositeTransliterationTable.Combine(
+            new CurrencyMap(),
+            new SimpleTestTable());
+        string input = "Ціна: 100₴";
+
+        // Act
+        string result = Translit.Convert(input, compositeTable);
+
+        // Assert
+        Assert.Contains("UAH", result);
+        Assert.DoesNotContain("₴", result);
+    }
+
+    [Fact]
+    public void Convert_RussianRuble_ConvertsToRUB()
+    {
+        // Arrange
+        var compositeTable = CompositeTransliterationTable.Combine(
+            new CurrencyMap(),
+            new SimpleTestTable());
+        string input = "Вартість: 500₽";
+
+        // Act
+        string result = Translit.Convert(input, compositeTable);
+
+        // Assert
+        Assert.Contains("RUB", result);
+        Assert.DoesNotContain("₽", result);
+    }
+
+    [Fact]
+    public void Convert_MultipleCurrencies_AllConverted()
+    {
+        // Arrange
+        var compositeTable = CompositeTransliterationTable.Combine(
+            new CurrencyMap(),
+            new SimpleTestTable());
+        string input = "100₴ 50€ 75£ 200¥";
+
+        // Act
+        string result = Translit.Convert(input, compositeTable);
+
+        // Assert
+        Assert.Contains("UAH", result);
+        Assert.Contains("EUR", result);
+        Assert.Contains("GBP", result);
+        Assert.Contains("CNY", result);
+        Assert.DoesNotContain("₴", result);
+        Assert.DoesNotContain("€", result);
+        Assert.DoesNotContain("£", result);
+        Assert.DoesNotContain("¥", result);
+    }
+
+    [Fact]
+    public void Convert_CurrenciesWithText_IntegratesCorrectly()
+    {
+        // Arrange
+        var compositeTable = CompositeTransliterationTable.Combine(
+            new CurrencyMap(),
+            new SimpleTestTable());
+        string input = "Вартість товару: 150₴, Контрактна вартість: 50€";
+
+        // Act
+        string result = Translit.Convert(input, compositeTable);
+
+        // Assert
+        Assert.Contains("150UAH", result);
+        Assert.Contains("50EUR", result);
+        Assert.DoesNotContain("₴", result);
+        Assert.DoesNotContain("€", result);
+    }
+
+    [Fact]
+    public void Convert_CurrencyWithComposedMaps_StacksCorrectly()
+    {
+        // Arrange - Stack currency + special characters + language
+        var compositeTable = CompositeTransliterationTable.Combine(
+            new CurrencyMap(),
+            CompositeTransliterationTable.Combine(
+                TransliterationTables.SpecialCharacters,
+                new SimpleTestTable()));
+        string input = "«Ціна» №1: 100₴";
+
+        // Act
+        string result = Translit.Convert(input, compositeTable);
+
+        // Assert
+        Assert.Contains("\"", result);  // Guillemets converted
+        Assert.Contains("No1", result); // Numero sign converted
+        Assert.Contains("UAH", result); // Currency converted
+        Assert.DoesNotContain("«", result);
+        Assert.DoesNotContain("»", result);
+        Assert.DoesNotContain("№", result);
+        Assert.DoesNotContain("₴", result);
+    }
+
+    #endregion
 }

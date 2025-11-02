@@ -28,6 +28,16 @@ A new architecture for combining multiple transliteration tables together, enabl
   - Combines `SpecialCases` and `FirstCharacters` dictionaries from both tables
   - Handles `DeletePattern` regex intelligently
 
+- **New Class: `CurrencyMap`** (`src/TranslitKit/CurrencyMap.cs`)
+  - Pre-built transliteration map for 25+ currency symbols
+  - Supports Eastern European currencies: `₴` → `UAH`, `₽` → `RUB`, `₼` → `AZN`, `₾` → `GEL`
+  - Supports Asian currencies: `₹` → `INR`, `₨` → `PKR`, `₩` → `KRW`, `¥` → `CNY`
+  - Supports Middle East/Africa: `₪` → `ILS`, `₦` → `NGN`, `₵` → `GHS`
+  - Supports Americas: `₡` → `CRC`, `₲` → `PYG`, `₱` → `PHP`
+  - Supports other currencies: `₺` → `TRY`, `₿` → `BTC`, `$` → `USD`, `€` → `EUR`, `£` → `GBP`, `¢` → `CENT`, `¤` → `CURR`
+  - Can be composed with any language-specific transliteration table
+  - Implements `ITransliterationTable` interface
+
 - **Enhanced: `TransliterationTables`** (`src/TranslitKit/TransliterationTables.cs`)
   - New static property: `SpecialCharacters` - provides access to the built-in special characters map
   - Updated documentation to reference composition API

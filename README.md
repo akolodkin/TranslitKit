@@ -124,12 +124,20 @@ output = Translit.Convert(input, new UkrainianKMU(), preserveCase: false);
 
 TranslitKit supports composing multiple transliteration tables together to handle special characters alongside language-specific transliteration.
 
-#### Built-in Special Characters Map
+#### Built-in Special Characters Maps
 
-The library includes a `SpecialCharactersMap` that handles Unicode characters commonly used in Cyrillic documents:
+The library includes pre-built transliteration maps for common Unicode characters:
 
+**SpecialCharactersMap**
 - **Guillemets** (French quotation marks): `«` → `"`, `»` → `"`
 - **Numero sign**: `№` → `No`
+
+**CurrencyMap**
+- **Eastern Europe**: `₴` → `UAH`, `₽` → `RUB`, `₼` → `AZN`, `₾` → `GEL`
+- **Asia**: `₹` → `INR`, `₨` → `PKR`, `₩` → `KRW`, `¥` → `CNY`
+- **Middle East/Africa**: `₪` → `ILS`, `₦` → `NGN`, `₵` → `GHS`
+- **Americas**: `₡` → `CRC`, `₲` → `PYG`, `₱` → `PHP`
+- **Other**: `₺` → `TRY`, `₿` → `BTC`, `$` → `USD`, `€` → `EUR`, `£` → `GBP`
 
 #### Usage
 
