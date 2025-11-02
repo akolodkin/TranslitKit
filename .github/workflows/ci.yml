@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
+        dotnet-version: ['8.0.x', '9.0.x']
 
     steps:
     - name: Checkout code
@@ -21,7 +22,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: ${{ matrix.dotnet-version }}
 
     - name: Restore dependencies
       run: dotnet restore TranslitKit.sln

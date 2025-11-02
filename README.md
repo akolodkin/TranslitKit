@@ -222,7 +222,7 @@ In all these cases, the original Cyrillic text should remain the authoritative s
 
 ## Requirements
 
-- .NET 8.0 or higher
+- .NET 8.0 or .NET 9.0
 
 ## Contributing
 

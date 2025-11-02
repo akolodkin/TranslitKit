@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Multi-target support for .NET 8.0 and .NET 9.0
+- GitHub Actions CI/CD workflows:
+  - `ci.yml` - Continuous integration on push/PR (builds and tests on Windows & Linux against .NET 8.0 and 9.0)
+  - `release.yml` - Automated NuGet package publishing on version tags
+- Comprehensive GitHub Actions documentation in `.github/workflows/README.md`
+
+### Changed
+
+- Project reorganization: renamed from `cx.core.translit` to `TranslitKit`
+- Updated all project folder names and solution structure to match new name
+- Updated all internal namespaces to `TranslitKit`
+- Updated repository URLs to point to `akolodkin/TranslitKit`
+
 ## [1.0.0] - 2025-11-01
 
 ### Added

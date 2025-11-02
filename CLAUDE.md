@@ -152,10 +152,11 @@ Example: `Convert_UkrainianTextWithSpecialCases_HandlesZgCorrectly`
 
 ## Target Framework
 
-- **.NET 8.0+** (uses C# 12 features)
+- **.NET 8.0 and .NET 9.0** (uses C# 12 features compatible with both versions)
 - Nullable reference types enabled
 - No external dependencies (only .NET BCL)
 - AOT-compatible design
+- Multi-targeted NuGet package (includes binaries for both net8.0 and net9.0)
 
 ## NuGet Package Details
 
