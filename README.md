@@ -128,11 +128,13 @@ TranslitKit supports composing multiple transliteration tables together to handl
 
 The library includes pre-built transliteration maps for common Unicode characters:
 
-**SpecialCharactersMap**
+##### SpecialCharactersMap
+
 - **Guillemets** (French quotation marks): `«` → `"`, `»` → `"`
 - **Numero sign**: `№` → `No`
 
-**CurrencyMap**
+##### CurrencyMap
+
 - **Eastern Europe**: `₴` → `UAH`, `₽` → `RUB`, `₼` → `AZN`, `₾` → `GEL`
 - **Asia**: `₹` → `INR`, `₨` → `PKR`, `₩` → `KRW`, `¥` → `CNY`
 - **Middle East/Africa**: `₪` → `ILS`, `₦` → `NGN`, `₵` → `GHS`
