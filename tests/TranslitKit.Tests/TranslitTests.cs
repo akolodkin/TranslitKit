@@ -502,4 +502,265 @@ public class TranslitTests
     }
 
     #endregion
+
+    #region Composite Transliteration Table Tests
+
+    [Fact]
+    public void Compose_SpecialCharactersWithLanguageMap_CreatesCompositeTable()
+    {
+        // Arrange
+        var baseTable = new SimpleTestTable();
+        var compositeTable = new CompositeTransliterationTable(
+            TransliterationTables.SpecialCharacters,
+            baseTable);
+
+        // Act & Assert
+        Assert.NotNull(compositeTable);
+        Assert.NotNull(compositeTable.MainTranslitTable);
+        // Verify both special characters and language mappings are in the composite
+        Assert.True(compositeTable.MainTranslitTable.ContainsKey('«'));
+        Assert.True(compositeTable.MainTranslitTable.ContainsKey('а'));
+    }
+
+    [Fact]
+    public void Compose_CombineMethod_StacksTablesCorrectly()
+    {
+        // Arrange
+        var baseTable = new SimpleTestTable();
+        var compositeTable = CompositeTransliterationTable.Combine(
+            TransliterationTables.SpecialCharacters,
+            baseTable);
+        string input = "«тест» №5";
+
+        // Act
+        string result = Translit.Convert(input, compositeTable);
+
+        // Assert
+        Assert.Equal("\"test\" No5", result);
+        Assert.DoesNotContain("«", result);
+        Assert.DoesNotContain("»", result);
+        Assert.DoesNotContain("№", result);
+    }
+
+    #endregion
+
+    #region Unicode Character Conversion Tests (Using Composed Tables)
+
+    [Fact]
+    public void Convert_LeftGuillemet_ConvertsToAsciiDoubleQuote()
+    {
+        // Arrange
+        var table = CompositeTransliterationTable.Combine(
+            TransliterationTables.SpecialCharacters,
+            new SimpleTestTable());
+        string input = "«привіт»";
+
+        // Act
+        string result = Translit.Convert(input, table);
+
+        // Assert
+        Assert.Equal("\"pryvit\"", result);
+        Assert.DoesNotContain("«", result);
+        Assert.DoesNotContain("»", result);
+    }
+
+    [Fact]
+    public void Convert_RightGuillemet_ConvertsToAsciiDoubleQuote()
+    {
+        // Arrange
+        var table = CompositeTransliterationTable.Combine(
+            TransliterationTables.SpecialCharacters,
+            new SimpleTestTable());
+        string input = "сказав «слово» добре";
+
+        // Act
+        string result = Translit.Convert(input, table);
+
+        // Assert
+        Assert.Contains("\"slovo\"", result);
+        Assert.DoesNotContain("«", result);
+        Assert.DoesNotContain("»", result);
+    }
+
+    [Fact]
+    public void Convert_NumeroSign_ConvertsToNo()
+    {
+        // Arrange
+        var table = CompositeTransliterationTable.Combine(
+            TransliterationTables.SpecialCharacters,
+            new SimpleTestTable());
+        string input = "Формула №1";
+
+        // Act
+        string result = Translit.Convert(input, table);
+
+        // Assert
+        Assert.Equal("Formula No1", result);
+        Assert.DoesNotContain("№", result);
+    }
+
+    [Fact]
+    public void Convert_MultipleNumeroSigns_AllConverted()
+    {
+        // Arrange
+        var table = CompositeTransliterationTable.Combine(
+            TransliterationTables.SpecialCharacters,
+            new SimpleTestTable());
+        string input = "№1, №2 та №3";
+
+        // Act
+        string result = Translit.Convert(input, table);
+
+        // Assert
+        Assert.Equal("No1, No2 ta No3", result);
+        Assert.DoesNotContain("№", result);
+    }
+
+    [Fact]
+    public void Convert_MixedSpecialUnicodeCharacters_AllConverted()
+    {
+        // Arrange
+        var table = CompositeTransliterationTable.Combine(
+            TransliterationTables.SpecialCharacters,
+            new SimpleTestTable());
+        string input = "«Тест» №99 та «ще один»";
+
+        // Act
+        string result = Translit.Convert(input, table);
+
+        // Assert
+        Assert.Equal("\"Test\" No99 ta \"shche odyn\"", result);
+        Assert.DoesNotContain("«", result);
+        Assert.DoesNotContain("»", result);
+        Assert.DoesNotContain("№", result);
+    }
+
+    [Fact]
+    public void Convert_GuillemetsWithCasePreservation_MaintainsCasing()
+    {
+        // Arrange
+        var table = CompositeTransliterationTable.Combine(
+            TransliterationTables.SpecialCharacters,
+            new SimpleTestTable());
+        string input = "«ПРИВІТ»";
+
+        // Act
+        string result = Translit.Convert(input, table, preserveCase: true);
+
+        // Assert
+        Assert.Equal("\"PRYVIT\"", result);
+    }
+
+    [Fact]
+    public void Convert_MultiCharacterGuillemetsWithAllCaps_PreservesCase()
+    {
+        // Arrange
+        var table = CompositeTransliterationTable.Combine(
+            TransliterationTables.SpecialCharacters,
+            new SimpleTestTable());
+        // Ї at start converts to "Yi" or "yi" depending on context, followed by guillemets
+        string input = "«ЇЖ» №1";
+
+        // Act
+        string result = Translit.Convert(input, table, preserveCase: true);
+
+        // Assert
+        // ї -> "i", ж -> "zh", guillemets -> "
+        // The result should have guillemets converted to quotes
+        Assert.Contains("\"", result);
+        Assert.DoesNotContain("«", result);
+        Assert.DoesNotContain("»", result);
+        Assert.DoesNotContain("Ї", result);
+        Assert.DoesNotContain("ї", result);
+    }
+
+    [Fact]
+    public void Convert_MultiCharacterConversionWithGuillemets_HandlesCorrectly()
+    {
+        // Arrange
+        var table = CompositeTransliterationTable.Combine(
+            TransliterationTables.SpecialCharacters,
+            new SimpleTestTable());
+        // ж converts to "zh" (2 chars), ю converts to "iu" (2 chars)
+        string input = "«жю»";
+
+        // Act
+        string result = Translit.Convert(input, table);
+
+        // Assert
+        Assert.Equal("\"zhiu\"", result);
+        Assert.DoesNotContain("«", result);
+        Assert.DoesNotContain("»", result);
+    }
+
+    [Fact]
+    public void Convert_AllCapsMultiCharacterWithGuillemets_PreservesCase()
+    {
+        // Arrange
+        var table = CompositeTransliterationTable.Combine(
+            TransliterationTables.SpecialCharacters,
+            new SimpleTestTable());
+        // ЖЮ all caps with guillemets
+        string input = "«ЖЮ»";
+
+        // Act
+        string result = Translit.Convert(input, table, preserveCase: true);
+
+        // Assert
+        // All-caps should be converted to uppercase
+        Assert.Equal("\"ZHIU\"", result);
+        Assert.DoesNotContain("«", result);
+        Assert.DoesNotContain("»", result);
+    }
+
+    [Fact]
+    public void Convert_AllCapsNumeroSignAndMultiCharacters_HandlesAllFeatures()
+    {
+        // Arrange
+        var table = CompositeTransliterationTable.Combine(
+            TransliterationTables.SpecialCharacters,
+            new SimpleTestTable());
+        // Mix of all features: guillemets, numero sign, multi-char conversions, all caps
+        // Use "та" (and) in lowercase - the full string is NOT all-caps
+        string input = "«ЖЮ» №1 та «ШЩ» №2";
+
+        // Act
+        string result = Translit.Convert(input, table, preserveCase: true);
+
+        // Assert
+        // Since the input is NOT all-caps (та is lowercase), case is not forced to uppercase
+        // ж/Ж -> "zh"/"Zh", ю/Ю -> "iu"/"Iu", ш -> "sh", щ -> "shch"
+        // № -> "No"
+        Assert.Equal("\"ZhIu\" No1 ta \"ShShch\" No2", result);
+        Assert.DoesNotContain("«", result);
+        Assert.DoesNotContain("»", result);
+        Assert.DoesNotContain("№", result);
+        Assert.DoesNotContain("Ж", result);
+        Assert.DoesNotContain("Ю", result);
+    }
+
+    [Fact]
+    public void Convert_TrulyAllCapsNumeroAndGuillemets_PreservesCase()
+    {
+        // Arrange
+        var table = CompositeTransliterationTable.Combine(
+            TransliterationTables.SpecialCharacters,
+            new SimpleTestTable());
+        // Truly all-caps input with guillemets and numero sign
+        string input = "«ЖЮ» №1 І «ШЩ» №2";
+
+        // Act
+        string result = Translit.Convert(input, table, preserveCase: true);
+
+        // Assert
+        // All Cyrillic letters are uppercase, so case should be preserved as uppercase
+        // ж/Ж -> "zh"/"Zh", ю/Ю -> "iu"/"Iu", ш -> "sh", щ -> "shch", і/І -> "i"/"I"
+        // № -> "No" -> "NO" (converted to uppercase in case preservation stage)
+        Assert.Equal("\"ZHIU\" NO1 I \"SHSHCH\" NO2", result);
+        Assert.DoesNotContain("«", result);
+        Assert.DoesNotContain("»", result);
+        Assert.DoesNotContain("№", result);
+    }
+
+    #endregion
 }

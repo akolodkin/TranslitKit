@@ -5,9 +5,63 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.3] - 2025-11-02
 
 ### Added
+
+#### Composable Transliteration Maps
+
+A new architecture for combining multiple transliteration tables together, enabling flexible handling of special characters and domain-specific extensions.
+
+- **New Class: `SpecialCharactersMap`** (`src/TranslitKit/SpecialCharactersMap.cs`)
+  - Built-in transliteration map for Unicode characters commonly used in Cyrillic documents
+  - Handles guillemets (French quotation marks): `«` → `"`, `»` → `"`
+  - Handles numero sign: `№` → `No`
+  - Can be stacked with any language-specific transliteration table
+  - Implements `ITransliterationTable` interface
+
+- **New Class: `CompositeTransliterationTable`** (`src/TranslitKit/CompositeTransliterationTable.cs`)
+  - Implements `ITransliterationTable`
+  - Enables composing/stacking two transliteration tables together
+  - Static factory method: `CompositeTransliterationTable.Combine(firstTable, secondTable)`
+  - Intelligently merges character mappings from both tables (second table takes precedence)
+  - Combines `SpecialCases` and `FirstCharacters` dictionaries from both tables
+  - Handles `DeletePattern` regex intelligently
+
+- **Enhanced: `TransliterationTables`** (`src/TranslitKit/TransliterationTables.cs`)
+  - New static property: `SpecialCharacters` - provides access to the built-in special characters map
+  - Updated documentation to reference composition API
+
+### Benefits
+
+- **DRY Principle**: Unicode character mappings defined once, reused across all 23 transliteration systems
+- **No Duplication**: Original 23 transliteration tables remain completely unchanged
+- **Extensibility**: Easy to create custom transliteration maps for domain-specific characters
+- **Flexibility**: Compose any two transliteration tables together in any order
+- **Backward Compatible**: All existing code continues to work without any changes
+
+### Usage Examples
+
+Basic composition:
+
+```csharp
+var table = CompositeTransliterationTable.Combine(
+    TransliterationTables.SpecialCharacters,
+    new UkrainianKMU());
+
+var result = Translit.Convert("«Привіт» №1", table);
+// Output: "Pryvit" No1
+```
+
+### Use Cases
+
+- **International documents**: Process documents with guillemets and numero signs
+- **Financial reports**: Handle currency symbols and mathematical operators
+- **Legal documents**: Handle copyright, trademark, and other legal symbols
+- **Technical documentation**: Handle special technical characters and formatting marks
+- **Data conversion**: Normalize text with special punctuation marks
+- **Search indexing**: Include special characters in full-text search indexing
+- **Document processing**: Handle OCR output with varied formatting
 
 - Multi-target support for .NET 8.0 and .NET 9.0
 - GitHub Actions CI/CD workflows:

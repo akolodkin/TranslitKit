@@ -2,9 +2,17 @@ namespace TranslitKit;
 
 /// <summary>
 /// Provides access to all available transliteration tables organized by language.
+/// Also provides methods for composing/stacking transliteration tables.
 /// </summary>
 public static class TransliterationTables
 {
+    /// <summary>
+    /// Gets the special characters transliteration map (guillemets and numero sign).
+    /// This map can be stacked with any language-specific transliteration table using
+    /// <see cref="CompositeTransliterationTable.Combine(ITransliterationTable, ITransliterationTable)"/>.
+    /// </summary>
+    public static ITransliterationTable SpecialCharacters { get; } = new SpecialCharactersMap();
+
     /// <summary>
     /// Gets all Ukrainian transliteration tables (13 systems).
     /// </summary>

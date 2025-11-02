@@ -120,6 +120,109 @@ output = Translit.Convert(input, new UkrainianKMU(), preserveCase: false);
 // Output: "Kyiv" (case not preserved)
 ```
 
+### Composable Transliteration Maps
+
+TranslitKit supports composing multiple transliteration tables together to handle special characters alongside language-specific transliteration.
+
+#### Built-in Special Characters Map
+
+The library includes a `SpecialCharactersMap` that handles Unicode characters commonly used in Cyrillic documents:
+
+- **Guillemets** (French quotation marks): `«` → `"`, `»` → `"`
+- **Numero sign**: `№` → `No`
+
+#### Usage
+
+Combine the special characters map with any language-specific transliteration table:
+
+```csharp
+// Combine special characters with Ukrainian KMU
+var table = CompositeTransliterationTable.Combine(
+    TransliterationTables.SpecialCharacters,
+    new UkrainianKMU());
+
+string result = Translit.Convert("«Привіт» №1", table);
+// Output: "Pryvit" No1
+
+// Works with any language system
+var russianTable = CompositeTransliterationTable.Combine(
+    TransliterationTables.SpecialCharacters,
+    new RussianGOST2006());
+
+result = Translit.Convert("«Текст» №42", russianTable);
+// Output: "Tekst" No42
+```
+
+#### Creating Custom Composite Maps
+
+You can create custom composite maps by combining any two transliteration tables:
+
+```csharp
+// Combine two custom tables (second takes precedence)
+var customComposite = CompositeTransliterationTable.Combine(
+    TransliterationTables.SpecialCharacters,
+    new UkrainianSimple());
+
+string result = Translit.Convert("«Україна» №1", customComposite);
+// Output: "Ukraina" No1
+```
+
+#### Extending Transliteration Maps with Custom Characters
+
+You can create custom transliteration maps to handle domain-specific characters and then compose them with existing tables:
+
+```csharp
+// Example: Create a custom map for currency and mathematical symbols
+public class CurrencyAndSymbolsMap : TransliterationTableBase
+{
+    public CurrencyAndSymbolsMap() : base(
+        mainTable: new Dictionary<string, string>
+        {
+            { "₴", "UAH" },    // Ukrainian Hryvnia
+            { "₽", "RUB" },    // Russian Ruble
+            { "©", "(c)" },    // Copyright
+            { "®", "(R)" },    // Registered trademark
+            { "™", "(TM)" },   // Trademark
+            { "°", "deg" },    // Degree symbol
+            { "±", "+/-" },    // Plus-minus
+            { "×", "x" },      // Multiplication sign
+            { "÷", "/" },      // Division sign
+        },
+        specialCases: null,
+        firstCharacters: null,
+        deleteChars: null)
+    {
+    }
+}
+
+// Compose multiple custom maps with language-specific tables
+var compositeTable = CompositeTransliterationTable.Combine(
+    new CurrencyAndSymbolsMap(),
+    CompositeTransliterationTable.Combine(
+        TransliterationTables.SpecialCharacters,
+        new UkrainianKMU()));
+
+string result = Translit.Convert("Ціна: 100₴ «Спеціальна пропозиція» № 1 ©", compositeTable);
+// Output: "Tsina: 100UAH Spetsialna propozytsiya No 1 (c)"
+```
+
+**Key Points:**
+
+- Create custom maps by inheriting from `TransliterationTableBase`
+- Compose multiple maps together for layered transliteration
+- Second table in `Combine()` takes precedence for conflicting mappings
+- Order matters: put more specific maps first, general maps later
+
+#### Use Cases for Composite Maps
+
+- **International documents**: Process documents that mix Cyrillic text with guillemets and numero signs
+- **Data conversion**: Normalize text that uses special punctuation marks
+- **Search indexing**: Include special characters in full-text search indexing
+- **Document processing**: Handle OCR output and scanned documents with varied formatting
+- **Financial reports**: Handle currency symbols (₴, ₽) and mathematical operators
+- **Legal documents**: Handle copyright (©), trademark (®), and other legal symbols
+- **Technical documentation**: Handle special technical characters and formatting marks
+
 ## How It Works
 
 The library implements a 5-stage transliteration algorithm:
