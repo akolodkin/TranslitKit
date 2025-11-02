@@ -7,10 +7,12 @@ This directory contains GitHub Actions workflows for TranslitKit continuous inte
 ### 1. CI Workflow (`ci.yml`)
 
 **Triggers:**
-- Push to `master` branch
-- Pull requests targeting `master` branch
+
+- Push to `main` branch
+- Pull requests targeting `main` branch
 
 **What it does:**
+
 - Runs on both Ubuntu Linux and Windows
 - Restores NuGet packages
 - Builds the solution in Release configuration
@@ -18,6 +20,7 @@ This directory contains GitHub Actions workflows for TranslitKit continuous inte
 - Uploads test results as artifacts
 
 **Status Badge:**
+
 ```markdown
 [![CI](https://github.com/akolodkin/TranslitKit/actions/workflows/ci.yml/badge.svg)](https://github.com/akolodkin/TranslitKit/actions/workflows/ci.yml)
 ```
@@ -25,9 +28,11 @@ This directory contains GitHub Actions workflows for TranslitKit continuous inte
 ### 2. Release Workflow (`release.yml`)
 
 **Triggers:**
+
 - Push of git tags matching `v*.*.*` pattern (e.g., `v1.0.0`, `v1.2.3`)
 
 **What it does:**
+
 1. Extracts version from the git tag (e.g., `v1.2.3` → `1.2.3`)
 2. Updates the version in `TranslitKit.csproj`
 3. Restores dependencies and builds in Release mode
@@ -37,6 +42,7 @@ This directory contains GitHub Actions workflows for TranslitKit continuous inte
 7. Creates a GitHub Release with the package as an artifact
 
 **Status Badge:**
+
 ```markdown
 [![Release](https://github.com/akolodkin/TranslitKit/actions/workflows/release.yml/badge.svg)](https://github.com/akolodkin/TranslitKit/actions/workflows/release.yml)
 ```
@@ -52,6 +58,7 @@ This is your NuGet.org API key required to publish packages.
 **How to set it up:**
 
 1. **Get a NuGet API Key:**
+
    - Go to [NuGet.org](https://www.nuget.org/)
    - Sign in to your account
    - Go to [API Keys](https://www.nuget.org/account/apikeys)
@@ -78,17 +85,21 @@ Follow these steps to publish a new version to NuGet:
 ### 1. Update Version Information
 
 **Update `CHANGELOG.md`:**
+
 ```markdown
 ## [1.0.1] - 2025-11-02
 
 ### Fixed
+
 - Bug fix description
 
 ### Added
+
 - New feature description
 ```
 
 **Optionally update `PackageReleaseNotes` in `src/TranslitKit/TranslitKit.csproj`:**
+
 ```xml
 <PackageReleaseNotes>Bug fixes and performance improvements.</PackageReleaseNotes>
 ```
@@ -98,7 +109,7 @@ Follow these steps to publish a new version to NuGet:
 ```bash
 git add CHANGELOG.md
 git commit -m "chore: prepare v1.0.1 release"
-git push origin master
+git push origin main
 ```
 
 ### 3. Create and Push Version Tag
@@ -134,6 +145,7 @@ This project uses [Semantic Versioning](https://semver.org/):
 **Error:** `401 Unauthorized` or `403 Forbidden`
 
 **Solution:**
+
 - Verify `NUGET_API_KEY` secret is set correctly
 - Check if the API key has expired
 - Ensure API key has "Push" permissions for the TranslitKit package
@@ -143,6 +155,7 @@ This project uses [Semantic Versioning](https://semver.org/):
 **Error:** `409 Conflict - Package already exists`
 
 **Solution:**
+
 - You cannot replace an existing version on NuGet
 - Create a new version tag (e.g., if `v1.0.1` exists, use `v1.0.2`)
 - The workflow uses `--skip-duplicate` flag to handle this gracefully
@@ -150,9 +163,10 @@ This project uses [Semantic Versioning](https://semver.org/):
 ### Tests Fail During Release
 
 **Solution:**
+
 - The workflow will abort if tests fail
 - Fix the failing tests locally
-- Push fixes to master
+- Push fixes to main
 - Delete and recreate the tag:
   ```bash
   git tag -d v1.0.1
