@@ -238,4 +238,4 @@ This library is a C# port of [translit-ua](https://github.com/dchaplinsky/transl
 
 ## Support
 
-For issues and questions, please use the [GitHub Issues](https://github.com/yourusername/TranslitKit/issues) page.
+For issues and questions, please use the [GitHub Issues](https://github.com/akolodkin/TranslitKit/issues) page.
