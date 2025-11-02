@@ -2,6 +2,8 @@
 
 [![NuGet](https://img.shields.io/nuget/v/TranslitKit.svg)](https://www.nuget.org/packages/TranslitKit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI](https://github.com/akolodkin/TranslitKit/actions/workflows/ci.yml/badge.svg)](https://github.com/akolodkin/TranslitKit/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/akolodkin/TranslitKit/branch/main/graph/badge.svg)](https://codecov.io/gh/akolodkin/TranslitKit)
 
 A .NET library for transliterating Ukrainian and Russian text from Cyrillic to Latin characters. This is a C# port of the Python [translit-ua](https://github.com/dchaplinsky/translit-ua) library.
 

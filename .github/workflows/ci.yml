@@ -30,12 +30,22 @@ jobs:
     - name: Build solution
       run: dotnet build --no-restore --configuration Release TranslitKit.sln
 
-    - name: Run tests
-      run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=test-results.trx" TranslitKit.sln
+    - name: Run tests with code coverage
+      run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage" TranslitKit.sln
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: test-results-${{ matrix.os }}
+        name: test-results-${{ matrix.os }}-${{ matrix.dotnet-version }}
         path: '**/test-results.trx'
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      if: matrix.os == 'ubuntu-latest' && matrix.dotnet-version == '8.0.x'
+      with:
+        files: '**/coverage.cobertura.xml'
+        flags: unittests
+        name: codecov-coverage
+        fail_ci_if_error: false
+        verbose: true

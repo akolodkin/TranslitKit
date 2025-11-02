@@ -5,6 +5,9 @@ on:
     tags:
       - "v*.*.*"
 
+permissions:
+  contents: write
+
 jobs:
   release:
     name: Build and Release
@@ -51,3 +54,19 @@ jobs:
         run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./artifacts/*.nupkg
+          generate_release_notes: true
+          body: |
+            ## TranslitKit ${{ steps.get_version.outputs.VERSION }}
+
+            This release has been published to [NuGet.org](https://www.nuget.org/packages/TranslitKit/${{ steps.get_version.outputs.VERSION }}).
+
+            ### Installation
+            ```bash
+            dotnet add package TranslitKit --version ${{ steps.get_version.outputs.VERSION }}
+            ```
+          token: ${{ secrets.GITHUB_TOKEN }}

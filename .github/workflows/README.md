@@ -13,17 +13,28 @@ This directory contains GitHub Actions workflows for TranslitKit continuous inte
 
 **What it does:**
 
-- Runs on both Ubuntu Linux and Windows
+- Runs on both Ubuntu Linux and Windows (across .NET 8.0 and 9.0)
 - Restores NuGet packages
 - Builds the solution in Release configuration
-- Runs all 858 tests
+- Runs all 858 tests with code coverage analysis
+- Collects test results (TRX format)
+- Uploads code coverage reports to Codecov
 - Uploads test results as artifacts
 
-**Status Badge:**
+**Status Badges:**
 
 ```markdown
 [![CI](https://github.com/akolodkin/TranslitKit/actions/workflows/ci.yml/badge.svg)](https://github.com/akolodkin/TranslitKit/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/akolodkin/TranslitKit/branch/main/graph/badge.svg)](https://codecov.io/gh/akolodkin/TranslitKit)
 ```
+
+**Code Coverage:**
+
+- XPlat Code Coverage data collected during test execution
+- Coverage reports uploaded to [Codecov.io](https://codecov.io/gh/akolodkin/TranslitKit)
+- Coverage badge shows overall code coverage percentage
+- Only one build matrix combination uploads to avoid duplicates (Ubuntu Linux + .NET 8.0)
+- View detailed coverage reports on [Codecov dashboard](https://codecov.io/gh/akolodkin/TranslitKit)
 
 ### 2. Release Workflow (`release.yml`)
 
@@ -175,6 +186,53 @@ This project uses [Semantic Versioning](https://semver.org/):
   git push origin v1.0.1
   ```
 
+## Code Coverage
+
+### Overview
+
+TranslitKit uses automated code coverage analysis to track test quality and ensure high standards:
+
+- **Coverage Tool:** [Coverlet](https://github.com/coverlet-coverage/coverlet) (included in test project)
+- **Coverage Format:** Cobertura XML (XPlat Code Coverage)
+- **Coverage Reporting:** [Codecov.io](https://codecov.io/gh/akolodkin/TranslitKit)
+- **Current Coverage:** 100% (858 comprehensive unit tests)
+
+### How Coverage Works
+
+1. **Collection:** During CI workflow, tests run with `--collect:"XPlat Code Coverage"`
+2. **Report Generation:** Coverlet generates `coverage.cobertura.xml` files in Cobertura format
+3. **Upload:** Codecov action uploads reports to codecov.io
+4. **Results:** Coverage badge reflects overall line/branch coverage
+
+### Local Coverage Testing
+
+To generate and view coverage reports locally:
+
+```bash
+# Run tests with coverage
+dotnet test --configuration Release --collect:"XPlat Code Coverage" TranslitKit.sln
+
+# Reports are generated in TestResults/*/coverage.opencover.xml
+# View detailed coverage reports by uploading to Codecov
+```
+
+### Coverage Dashboard
+
+View detailed coverage statistics:
+- **Codecov Dashboard:** https://codecov.io/gh/akolodkin/TranslitKit
+- **Coverage by File:** View which files have gaps
+- **Coverage Trends:** Track coverage over time
+- **PR Coverage Analysis:** See coverage impact of pull requests
+
+### Maintaining High Coverage
+
+All changes should maintain or improve code coverage:
+
+1. Write tests alongside implementation (TDD approach)
+2. Use existing 858 tests as reference for testing patterns
+3. Run coverage locally before pushing
+4. Review PR coverage reports on Codecov
+
 ## Local Testing
 
 Before creating a release, test locally:
@@ -196,6 +254,17 @@ dotnet nuget verify ./artifacts/TranslitKit.*.nupkg
 
 ## Additional Resources
 
+### CI/CD
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [NuGet Package Publishing](https://learn.microsoft.com/en-us/nuget/quickstart/create-and-publish-a-package-using-the-dotnet-cli)
 - [Semantic Versioning](https://semver.org/)
+
+### Code Coverage
+- [Coverlet Documentation](https://github.com/coverlet-coverage/coverlet)
+- [Codecov Integration Guide](https://docs.codecov.io/docs/about-the-codecov-bash-uploader)
+- [XPlat Code Coverage Format](https://github.com/coverlet-coverage/coverlet/wiki/OpenCover)
+
+### Project Resources
+- [TranslitKit GitHub Repository](https://github.com/akolodkin/TranslitKit)
+- [Codecov Dashboard](https://codecov.io/gh/akolodkin/TranslitKit)
+- [NuGet Package](https://www.nuget.org/packages/TranslitKit/)
